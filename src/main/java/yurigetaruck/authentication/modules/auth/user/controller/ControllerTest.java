@@ -8,8 +8,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api")
 public class ControllerTest {
 
-    @GetMapping("test")
-    public String endpointTeste() {
-        return "SUCESSO";
+    @GetMapping("test-user")
+    public String endpointTesteUser() {
+        return "SUCESSO USER";
+    }
+
+    @GetMapping("test-admin")
+    public String endpointTesteAdmin() {
+        return "SUCESSO ADMIN";
+    }
+
+    @GetMapping("test-tester")
+    public String endpointTesteTester() {
+        return "SUCESSO TESTER";
     }
 }

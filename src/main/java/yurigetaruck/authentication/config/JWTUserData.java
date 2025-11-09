@@ -1,4 +1,6 @@
 package yurigetaruck.authentication.config;
 
-public record JWTUserData (Integer userId, String email){
+import java.util.List;
+
+public record JWTUserData (Integer userId, String email, List<String> roles){
 }

@@ -7,9 +7,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import yurigetaruck.authentication.modules.auth.user.model.User;
+import yurigetaruck.authentication.modules.auth.user.repository.UserRepository;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -28,8 +31,11 @@ public class SecurityFilter extends OncePerRequestFilter {
             Optional<JWTUserData> optionalJWTUserData = tokenConfig.validateToken(token);
             if (optionalJWTUserData.isPresent()) {
                 JWTUserData userData = optionalJWTUserData.get();
-                // TODO - crirar credentials/authorities
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userData, null, null);
+                var authoritis = userData.roles().stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .toList();
+
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userData, null, authoritis);
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
             filterChain.doFilter(request, response);
